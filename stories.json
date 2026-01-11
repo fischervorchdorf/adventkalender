@@ -104,6 +104,13 @@
     "title": "Hans im Glück",
     "date": "15. Dezember"
   },
+  "16": {
+    "image": "assets/images/day_16.webp",
+    "audio": "assets/audio/day_16.mp3",
+    "text": "===========================================\nANLEITUNG - Adventskalender Installation\n===========================================\n\nWICHTIG: Alle Dateien müssen im GLEICHEN Ordner bleiben!\n\nDATEIEN:\n--------\n1. adventskalender.html  (Die Hauptdatei)\n2. ali_baba_bild.webp    (Das Bild für Türchen 1)\n3. ali_baba_audio.mp3    (Die Audio-Datei für Türchen 1)\n\nSO INSTALLIERST DU DEN KALENDER:\n---------------------------------\n\n1. Erstelle einen neuen Ordner auf deinem Computer\n   (z.B. \"Adventskalender_2026\")\n\n2. Lade ALLE drei Dateien herunter\n\n3. Verschiebe ALLE drei Dateien in den gleichen Ordner\n\n4. Öffne die Datei \"adventskalender.html\" mit einem Browser\n   (Doppelklick oder Rechtsklick → Öffnen mit → Browser)\n\n5. Fertig! Der Kalender sollte jetzt funktionieren.\n\nPROBLEMLÖSUNG:\n--------------\n\nFalls das Bild nicht angezeigt wird:\n→ Überprüfe, ob alle 3 Dateien im gleichen Ordner sind\n\nFalls der Ton nicht funktioniert:\n→ Klicke auf den Play-Button (▶️)\n→ Manche Browser blockieren Autoplay aus Sicherheitsgründen\n\nFalls gar nichts funktioniert:\n→ Versuche einen anderen Browser (Chrome, Firefox, Edge)\n→ Stelle sicher, dass JavaScript aktiviert ist\n\nWEITERE TÜRCHEN HINZUFÜGEN:\n---------------------------\nSende mir für jedes neue Türchen:\n- Text (als PDF oder Text)\n- Bild (als Bild-Datei)\n- Audio (als MP3-Datei)\n\nIch füge sie dann in den Kalender ein!\n\nViel Spaß mit dem Adventskalender! 🎄✨",
+    "title": "Alibaba",
+    "date": "16. Dezember"
+  },
   "17": {
     "image": "assets/images/day_17.jpg",
     "audio": "assets/audio/day_17.mp3",
