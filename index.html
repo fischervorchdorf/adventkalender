@@ -12,6 +12,89 @@
 <div id="welcome-screen"><div class="welcome-content"><h1 class="welcome-title">🎄 Willkommen! 🎄</h1><p style="font-size:1.5rem;margin-bottom:2rem">Entdecke jeden Tag eine neue magische Geschichte</p><button class="start-button" onclick="startAdvent()">Los geht's! ✨</button></div></div>
 <div class="container"><header><h1>🌟 Magischer Adventskalender 2026 🌟</h1><p class="subtitle">24 zauberhafte Geschichten für dich</p></header><div class="calendar-grid" id="calendar-grid"></div></div>
 <div id="story-modal" class="modal"><div class="modal-content"><div class="modal-header"><button class="close-button" onclick="closeModal()">×</button><h2 id="modal-title"></h2><p id="modal-date" style="opacity:0.9;font-size:1.1rem"></p></div><img id="modal-image" class="modal-image" style="display:none"><div class="modal-body"><div class="audio-player"><button class="play-button" id="play-button" onclick="toggleAudio()">▶️</button><p style="font-size:1rem;color:#555;margin-top:1rem;font-weight:600">🎧 Höre die Geschichte</p><audio id="story-audio" preload="auto"></audio></div><div class="story-text" id="story-text"></div></div></div></div>
-<script>let stories={},currentAudio=null;const icons=['🧞','🎁','⭐','🎅','🔔','🕯️','❄️','⛄','🎄','🌟'];fetch('stories.json').then(r=>r.json()).then(data=>{stories=data;generateDoors()}).catch(e=>console.error('Fehler:',e));function startAdvent(){document.getElementById('welcome-screen').classList.add('hidden')}function generateDoors(){const grid=document.getElementById('calendar-grid');for(let day=1;day<=24;day++){const door=document.createElement('div');door.className='door'+(stories[day]?' active':'');if(stories[day])door.onclick=()=>openDoor(day);door.innerHTML='<div class="door-front"><div class="door-number">'+day+'</div><div class="door-icon">'+icons[day%icons.length]+'</div></div>';grid.appendChild(door)}}function openDoor(day){const story=stories[day];if(!story)return;document.getElementById('modal-title').textContent=story.title;document.getElementById('modal-date').textContent=story.date;document.getElementById('story-text').textContent=story.text;const img=document.getElementById('modal-image');img.style.display='none';img.src='';if(currentAudio){currentAudio.pause();currentAudio.currentTime=0}setTimeout(()=>{img.onload=()=>img.style.display='block';img.onerror=()=>img.style.display='none';img.src=story.image},10);currentAudio=document.getElementById('story-audio');currentAudio.src=story.audio;currentAudio.load();document.getElementById('play-button').textContent='▶️';document.getElementById('story-modal').classList.add('active');currentAudio.oncanplaythrough=()=>currentAudio.play().catch(()=>{});currentAudio.onplay=()=>document.getElementById('play-button').textContent='⏸️';currentAudio.onpause=()=>document.getElementById('play-button').textContent='▶️';currentAudio.onerror=()=>console.error('Audio-Fehler')}function closeModal(){document.getElementById('story-modal').classList.remove('active');if(currentAudio){currentAudio.pause();currentAudio.currentTime=0;document.getElementById('play-button').textContent='▶️'}}function toggleAudio(){if(!currentAudio)return;if(currentAudio.paused){currentAudio.play().then(()=>document.getElementById('play-button').textContent='⏸️').catch(e=>console.error('Play-Fehler:',e))}else{currentAudio.pause();document.getElementById('play-button').textContent='▶️'}}document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()})</script>
+<script>
+let stories={},currentAudio=null;
+const icons=['🧞','🎁','⭐','🎅','🔔','🕯️','❄️','⛄','🎄','🌟'];
+
+fetch('stories.json').then(r=>r.json()).then(data=>{stories=data;generateDoors()}).catch(e=>console.error('Fehler:',e));
+
+function startAdvent(){document.getElementById('welcome-screen').classList.add('hidden')}
+
+function generateDoors(){
+    const grid=document.getElementById('calendar-grid');
+    for(let day=1;day<=24;day++){
+        const door=document.createElement('div');
+        door.className='door'+(stories[day]?' active':'');
+        if(stories[day])door.onclick=()=>openDoor(day);
+        door.innerHTML='<div class="door-front"><div class="door-number">'+day+'</div><div class="door-icon">'+icons[day%icons.length]+'</div></div>';
+        grid.appendChild(door)
+    }
+}
+
+function openDoor(day){
+    const story=stories[day];
+    if(!story)return;
+    
+    // WICHTIG: Audio sofort stoppen!
+    if(currentAudio){
+        currentAudio.pause();
+        currentAudio.currentTime=0;
+        currentAudio.src='';
+    }
+    
+    document.getElementById('modal-title').textContent=story.title;
+    document.getElementById('modal-date').textContent=story.date;
+    document.getElementById('story-text').textContent=story.text;
+    
+    const img=document.getElementById('modal-image');
+    img.style.display='none';
+    img.src='';
+    
+    setTimeout(()=>{
+        img.onload=()=>img.style.display='block';
+        img.onerror=()=>img.style.display='none';
+        img.src=story.image
+    },10);
+    
+    currentAudio=document.getElementById('story-audio');
+    currentAudio.src=story.audio;
+    currentAudio.load();
+    document.getElementById('play-button').textContent='▶️';
+    document.getElementById('story-modal').classList.add('active');
+    
+    currentAudio.oncanplaythrough=()=>currentAudio.play().catch(()=>{});
+    currentAudio.onplay=()=>document.getElementById('play-button').textContent='⏸️';
+    currentAudio.onpause=()=>document.getElementById('play-button').textContent='▶️'
+}
+
+function closeModal(){
+    document.getElementById('story-modal').classList.remove('active');
+    
+    // WICHTIG: Audio komplett stoppen!
+    if(currentAudio){
+        currentAudio.pause();
+        currentAudio.currentTime=0;
+        currentAudio.src='';
+        document.getElementById('play-button').textContent='▶️'
+    }
+}
+
+function toggleAudio(){
+    if(!currentAudio)return;
+    if(currentAudio.paused){
+        currentAudio.play().then(()=>document.getElementById('play-button').textContent='⏸️').catch(e=>console.error('Play-Fehler:',e))
+    }else{
+        currentAudio.pause();
+        document.getElementById('play-button').textContent='▶️'
+    }
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+// WICHTIG: Bei Modal-Hintergrund-Klick auch Audio stoppen!
+document.getElementById('story-modal').addEventListener('click',e=>{
+    if(e.target.id==='story-modal')closeModal()
+});
+</script>
 </body>
 </html>
