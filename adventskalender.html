@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magischer Adventskalender 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #d4145a;
+            --secondary: #fbb034;
+            --accent: #00a8cc;
+            --dark: #1a1a2e;
+            --light: #fff8f0;
+            --gold: #ffd700;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated snowflakes */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 1;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.5em;
+            animation: fall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Welcome Screen */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        #welcome-screen.hidden {
+            animation: fadeOut 0.5s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .welcome-content {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            animation: scaleIn 0.8s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .welcome-title {
+            font-size: clamp(2rem, 8vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            animation: bounce 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(-5px); }
+            to { transform: translateY(5px); }
+        }
+
+        .welcome-subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .start-button {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 1.5rem 3rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .start-button:hover {
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            font-size: clamp(2rem, 6vw, 4rem);
+            margin-bottom: 0.5rem;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            opacity: 0.9;
+        }
+
+        /* Calendar Grid */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .door {
+            aspect-ratio: 1;
+            position: relative;
+            cursor: pointer;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: doorAppear 0.5s ease-out backwards;
+        }
+
+        @keyframes doorAppear {
+            from {
+                transform: scale(0) rotate(180deg);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) rotate(0);
+                opacity: 1;
+            }
+        }
+
+        .door:nth-child(1) { animation-delay: 0.05s; }
+        .door:nth-child(2) { animation-delay: 0.1s; }
+        .door:nth-child(3) { animation-delay: 0.15s; }
+        .door:nth-child(4) { animation-delay: 0.2s; }
+        .door:nth-child(5) { animation-delay: 0.25s; }
+        .door:nth-child(6) { animation-delay: 0.3s; }
+        .door:nth-child(7) { animation-delay: 0.35s; }
+        .door:nth-child(8) { animation-delay: 0.4s; }
+        .door:nth-child(9) { animation-delay: 0.45s; }
+        .door:nth-child(10) { animation-delay: 0.5s; }
+        .door:nth-child(11) { animation-delay: 0.55s; }
+        .door:nth-child(12) { animation-delay: 0.6s; }
+        .door:nth-child(13) { animation-delay: 0.65s; }
+        .door:nth-child(14) { animation-delay: 0.7s; }
+        .door:nth-child(15) { animation-delay: 0.75s; }
+        .door:nth-child(16) { animation-delay: 0.8s; }
+        .door:nth-child(17) { animation-delay: 0.85s; }
+        .door:nth-child(18) { animation-delay: 0.9s; }
+        .door:nth-child(19) { animation-delay: 0.95s; }
+        .door:nth-child(20) { animation-delay: 1s; }
+        .door:nth-child(21) { animation-delay: 1.05s; }
+        .door:nth-child(22) { animation-delay: 1.1s; }
+        .door:nth-child(23) { animation-delay: 1.15s; }
+        .door:nth-child(24) { animation-delay: 1.2s; }
+
+        .door:hover {
+            transform: scale(1.05) rotate(-2deg);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .door-front {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: 4px solid white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .door.active .door-front {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--secondary) 100%);
+        }
+
+        .door-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .door-icon {
+            font-size: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .door.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .door.locked:hover {
+            transform: none;
+        }
+
+        /* Story Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 30px;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.5s ease-out;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(100px) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            position: relative;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 30px 30px 0 0;
+        }
+
+        .modal-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header .door-date {
+            opacity: 0.9;
+            font-size: 1.2rem;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: white;
+            color: var(--primary);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .close-button:hover {
+            transform: rotate(90deg) scale(1.1);
+            background: var(--secondary);
+        }
+
+        .modal-image {
+            width: 100%;
+            height: auto;
+            display: none;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .story-text {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--dark);
+            white-space: pre-wrap;
+        }
+
+        .audio-player {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .audio-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .play-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            background: var(--secondary);
+        }
+
+        .audio-info {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .calendar-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 1rem;
+            }
+
+            .door-number {
+                font-size: 2rem;
+            }
+
+            .modal-content {
+                margin: 1rem;
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            .story-text {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Snowflakes -->
+    <script>
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.textContent = '❄';
+            snowflake.style.left = Math.random() * 100 + '%';
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+            snowflake.style.opacity = Math.random();
+            document.body.appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.remove();
+            }, 5000);
+        }
+
+        setInterval(createSnowflake, 300);
+    </script>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen">
+        <div class="welcome-content">
+            <h1 class="welcome-title">🎄 Willkommen! 🎄</h1>
+            <p class="welcome-subtitle">Entdecke jeden Tag eine neue magische Geschichte</p>
+            <button class="start-button" onclick="startAdvent()">Los geht's! ✨</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <header>
+            <h1>🌟 Magischer Adventskalender 2026 🌟</h1>
+            <p class="subtitle">24 zauberhafte Geschichten für dich</p>
+        </header>
+
+        <div class="calendar-grid">
+            <!-- Door 1 - Ali Baba -->
+            <div class="door active" data-day="1" onclick="openDoor(1)">
+                <div class="door-front">
+                    <div class="door-number">1</div>
+                    <div class="door-icon">🧞</div>
+                </div>
+            </div>
+
+            <!-- Doors 2-24 (locked for now) -->
+            <div class="door locked" data-day="2">
+                <div class="door-front">
+                    <div class="door-number">2</div>
+                    <div class="door-icon">🎁</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="3">
+                <div class="door-front">
+                    <div class="door-number">3</div>
+                    <div class="door-icon">⭐</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="4">
+                <div class="door-front">
+                    <div class="door-number">4</div>
+                    <div class="door-icon">🎅</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="5">
+                <div class="door-front">
+                    <div class="door-number">5</div>
+                    <div class="door-icon">🔔</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="6">
+                <div class="door-front">
+                    <div class="door-number">6</div>
+                    <div class="door-icon">🕯️</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="7">
+                <div class="door-front">
+                    <div class="door-number">7</div>
+                    <div class="door-icon">❄️</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="8">
+                <div class="door-front">
+                    <div class="door-number">8</div>
+                    <div class="door-icon">⛄</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="9">
+                <div class="door-front">
+                    <div class="door-number">9</div>
+                    <div class="door-icon">🎄</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="10">
+                <div class="door-front">
+                    <div class="door-number">10</div>
+                    <div class="door-icon">🌟</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="11">
+                <div class="door-front">
+                    <div class="door-number">11</div>
+                    <div class="door-icon">🎁</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="12">
+                <div class="door-front">
+                    <div class="door-number">12</div>
+                    <div class="door-icon">🔔</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="13">
+                <div class="door-front">
+                    <div class="door-number">13</div>
+                    <div class="door-icon">⭐</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="14">
+                <div class="door-front">
+                    <div class="door-number">14</div>
+                    <div class="door-icon">🎅</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="15">
+                <div class="door-front">
+                    <div class="door-number">15</div>
+                    <div class="door-icon">🕯️</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="16">
+                <div class="door-front">
+                    <div class="door-number">16</div>
+                    <div class="door-icon">❄️</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="17">
+                <div class="door-front">
+                    <div class="door-number">17</div>
+                    <div class="door-icon">⛄</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="18">
+                <div class="door-front">
+                    <div class="door-number">18</div>
+                    <div class="door-icon">🎄</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="19">
+                <div class="door-front">
+                    <div class="door-number">19</div>
+                    <div class="door-icon">🌟</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="20">
+                <div class="door-front">
+                    <div class="door-number">20</div>
+                    <div class="door-icon">🎁</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="21">
+                <div class="door-front">
+                    <div class="door-number">21</div>
+                    <div class="door-icon">🔔</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="22">
+                <div class="door-front">
+                    <div class="door-number">22</div>
+                    <div class="door-icon">⭐</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="23">
+                <div class="door-front">
+                    <div class="door-number">23</div>
+                    <div class="door-icon">🎅</div>
+                </div>
+            </div>
+            <div class="door locked" data-day="24">
+                <div class="door-front">
+                    <div class="door-number">24</div>
+                    <div class="door-icon">🎄</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Story -->
+    <div id="story-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-button" onclick="closeModal()">×</button>
+                <h2 id="modal-title">Türchen 1</h2>
+                <p class="door-date" id="modal-date">1. Dezember</p>
+            </div>
+            <img id="modal-image" class="modal-image" alt="Geschichte Bild">
+            <div class="modal-body">
+                <div class="audio-player">
+                    <div class="audio-controls">
+                        <button class="play-button" id="play-button" onclick="toggleAudio()">▶️</button>
+                    </div>
+                    <p class="audio-info">Klicke auf Play, um die Geschichte zu hören 🎧</p>
+                    <audio id="story-audio" style="display: none;"></audio>
+                </div>
+                <div class="story-text" id="story-text"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Story data
+        const stories = {
+            1: {
+                title: "Ali Baba und die 40 Computernasen",
+                date: "1. Dezember",
+                image: "ali_baba_bild.webp",
+                audio: "ali_baba_audio.mp3",
+                text: `Hallo, mein Name ist Fabian Buchhegger, ich bin 25 Jahre alt und arbeite in der Firma Miba in Vorchdorf. Wir stellen Getriebeteile für Autos her. In meiner Freizeit bin ich gerne im Fitnessstudio oder an der Traun angeln. Und heute darf ich euch eine Geschichte erzählen.
+
+Und zwar von Alibaba und die 40 Computernasen.
+
+Es war einmal ein Junge namens Alibaba. Er lebte in einer großen Stadt und arbeitete als Lieferbote. Mit seinem schnellen Roller düste er durch die Straßen und brachte Pakete und Essen zu den Leuten. Alibaba war ein netter Kerl. Er hatte nicht viel Geld, aber das machte ihm nichts aus. Denn er hatte ein gutes Herz und war immer glücklich.
+
+Eines Abends, als Alibaba gerade eine Lieferung abgab, sah er etwas sehr Seltsames. In einem alten, halb kaputten Gebäude bemerkte er eine Gruppe merkwürdiger Typen. Sie hatten Sonnenbrillen und auch wenn es schon dunkel war und hatten große Kopfhörer auf.
+
+Alibaba schlich sich vorsichtig näher. Die Männer zückten ihre Handys und tippten schnell etwas darauf. Plötzlich öffnete sich eine versteckte Tür im Gebäude und einer von ihnen flüsterte Öffne dich, Computerhöhle! Alibaba war völlig baff, als die Tür lautlos aufging und die Männer hineingingen.
+
+Was ist denn das? dachte Alibaba. Er konnte seine Neugier nicht zurückhalten und beschloss dentra Typen heimlich zu folgen. Er schlich sich hinein, leise wie eine Katze. Drinnen war es noch merkwürdiger. Überall blinkten riesige Bildschirme und leuchtende Tasten. Die Männer, oder besser gesagt Computernasen, wie Alibaba sie jetzt nannte, saßen vor ihren Bildschirmen und tippten wie verrückt. Ah, ich hab's! Noch mehr Spielzeugautos für uns, rief einer der Typen. Ein anderer klatschte begeistert in die Hände. Und ich hab so viel Schokoriegel bestellt, dass wir ein ganzes Jahr naschen können.
+
+Alibaba staunte. Diese Computernasen bestellten einfach alles, was sie wollten und holten es mit ihren Computern in die geheime Höhle. Unglaublich, dachte Alibaba. Die haben alle diese Sachen gestohlen. Das ist ja wie Magie, aber irgendwie fies.
+
+Schnell schlich sich Alibaba aus der Höhle zurück auf die Straße. Er wusste, dass er etwas tun musste. Doch er war kein Dieb, also wollte er nicht einfach reingehen und sich die Sachen schnappen.
+
+Da fiel ihm etwas Schlaues ein. Ich werde mir Hilfe holen. Am nächsten Tag ging Alibaba zu seiner besten Freundin Mayana. Sie war nicht nur die schnellste Radfahrerin der Stadt, sie war auch richtig clever. Mayana sagte Alibaba aufgeregt. Du wirst es nicht glauben, was ich gestern entdeckt habe. Da ist eine geheime Computerhöhle, in der die Männer einfach alles bestellen, was sie wollen. Und zwar ohne zu bezahlen. Mayana schüttelte den Kopf. Das geht gar nicht, Ali. Wir müssen diesen Typen das Handwerk legen. Lass uns einen Plan schmieden.
+
+Die beiden machten sich einen Plan. Mayana schnappte sich ihr Fahrrad und folgte Alibaba zur geheimen Computerhöhle. Vor der Tür flüsterte Alibaba. Öffne dich, Computerhöhle. Die Tür glitt auf und die beiden schlichen hinein. Während die Computernasen gerade damit beschäftigt waren, noch mehr Schokoriegel und Spielzeug zu bestellen, schlichen Alibaba und Mayana durch die Höhle. Mayana nahm einen riesigen Rucksack voller Bananen mit. Was soll das? fragte Alibaba verwirrt. Vertrau mir, flüsterte Mayana grinsend. Dann warf Mayana die Bananenschalen quer durch die Höhle. Es dauerte nicht lange, bis die Computernasen aufsprangen, um nachzusehen, warum es so seltsam nach Bananen roch.
+
+Plötzlich rutschten sie alle auf den Schalen aus und purzelten durcheinander. Waaah, schrie einer der Computernasen, als er auf den Boden landete. Was ist hier los? Mayana und Alibaba konnten sich das Lachen nicht verkneifen. Während die Computernasen versuchten, wieder auf die Beine zu kommen, schnappte sich Mayana einen von den großen Bildschirmen und stellte ihn so ein, dass all die bestellten Sachen zurück zu den Menschen gingen, denen sie gestohlen worden waren.
+
+Fertig, rief Mayana triumphierend. Jetzt geht alles dahin zurück, wo es hingehört. Die Computernasen merkten, dass sie verloren hatten. Sie versuchten aufzustehen, rutschten aber immer wieder auf den Bananenschalen aus. Schließlich gaben sie auf und heulten. Wir wollten doch nur Schokoriegel. Alibaba und Mayana konnten sich vor Lachen kaum noch halten. Kommt Leute, ihr müsst einfach lernen, dass man Sachen nicht einfach so nehmen kann, sagte Alibaba. Vielleicht kauft ihr euch nächstes Mal die Schokoriegel einfach im Laden. Die Computernasen nickten kleinlaut und Alibaba und Mayana verließen die geheime Höhle.
+
+Auf dem Weg nach Hause fühlte sich Alibaba fantastisch. Nicht, weil er reich oder berühmt geworden war, sondern weil er das Richtige getan hatte. Und außerdem hatte er einen tollen neuen Trick gelernt. Immer Bananen dabei zu haben, falls es mal wieder brenzlig wird. Die Moral der Geschichte? Man kann alles Mögliche haben, aber das Wichtigste ist, ehrlich zu sein und das Richtige zu tun. Und wenn du mal in Schwierigkeiten steckst, vergiss nicht, ein paar Bananenschalen können Wunder wirken. Das ist richtig, Kinder. Ciao.`
+            }
+            // More stories will be added here
+        };
+
+        let currentAudio = null;
+
+        function startAdvent() {
+            document.getElementById('welcome-screen').classList.add('hidden');
+        }
+
+        function openDoor(day) {
+            const story = stories[day];
+            if (!story) {
+                alert('Diese Geschichte ist noch nicht verfügbar. Komm später wieder! 🎄');
+                return;
+            }
+
+            // Set modal content
+            document.getElementById('modal-title').textContent = story.title;
+            document.getElementById('modal-date').textContent = story.date;
+            document.getElementById('story-text').textContent = story.text;
+            
+            // Set and load image
+            const modalImage = document.getElementById('modal-image');
+            if (story.image) {
+                modalImage.onload = function() {
+                    modalImage.style.display = 'block';
+                };
+                modalImage.onerror = function() {
+                    console.error('Bild konnte nicht geladen werden:', story.image);
+                    modalImage.style.display = 'none';
+                };
+                modalImage.src = story.image;
+            } else {
+                modalImage.style.display = 'none';
+            }
+            
+            // Set audio
+            currentAudio = document.getElementById('story-audio');
+            currentAudio.src = story.audio;
+            
+            // Reset play button
+            document.getElementById('play-button').textContent = '▶️';
+            
+            // Show modal
+            document.getElementById('story-modal').classList.add('active');
+            
+            // Try to auto-play audio after a short delay
+            setTimeout(() => {
+                currentAudio.play().catch(function(error) {
+                    console.log('Autoplay wurde blockiert. Bitte klicke auf Play.');
+                    document.getElementById('play-button').textContent = '▶️';
+                });
+            }, 800);
+            
+            // Update play button when audio starts playing
+            currentAudio.onplay = function() {
+                document.getElementById('play-button').textContent = '⏸️';
+            };
+            
+            currentAudio.onpause = function() {
+                document.getElementById('play-button').textContent = '▶️';
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('story-modal').classList.remove('active');
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                document.getElementById('play-button').textContent = '▶️';
+            }
+        }
+
+        function toggleAudio() {
+            if (!currentAudio) return;
+            
+            if (currentAudio.paused) {
+                currentAudio.play().then(() => {
+                    document.getElementById('play-button').textContent = '⏸️';
+                }).catch((error) => {
+                    console.error('Fehler beim Abspielen:', error);
+                    alert('Audio konnte nicht abgespielt werden. Stelle sicher, dass die Datei "ali_baba_audio.mp3" im gleichen Ordner ist.');
+                });
+            } else {
+                currentAudio.pause();
+                document.getElementById('play-button').textContent = '▶️';
+            }
+        }
+
+        // Update play button when audio ends
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('story-audio');
+            audio.addEventListener('ended', function() {
+                document.getElementById('play-button').textContent = '▶️';
+            });
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('story-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+===========================================
+ANLEITUNG - Adventskalender Installation
+===========================================
+
+WICHTIG: Alle Dateien müssen im GLEICHEN Ordner bleiben!
+
+DATEIEN:
+--------
+1. adventskalender.html  (Die Hauptdatei)
+2. ali_baba_bild.webp    (Das Bild für Türchen 1)
+3. ali_baba_audio.mp3    (Die Audio-Datei für Türchen 1)
+
+SO INSTALLIERST DU DEN KALENDER:
+---------------------------------
+
+1. Erstelle einen neuen Ordner auf deinem Computer
+   (z.B. "Adventskalender_2026")
+
+2. Lade ALLE drei Dateien herunter
+
+3. Verschiebe ALLE drei Dateien in den gleichen Ordner
+
+4. Öffne die Datei "adventskalender.html" mit einem Browser
+   (Doppelklick oder Rechtsklick → Öffnen mit → Browser)
+
+5. Fertig! Der Kalender sollte jetzt funktionieren.
+
+PROBLEMLÖSUNG:
+--------------
+
+Falls das Bild nicht angezeigt wird:
+→ Überprüfe, ob alle 3 Dateien im gleichen Ordner sind
+
+Falls der Ton nicht funktioniert:
+→ Klicke auf den Play-Button (▶️)
+→ Manche Browser blockieren Autoplay aus Sicherheitsgründen
+
+Falls gar nichts funktioniert:
+→ Versuche einen anderen Browser (Chrome, Firefox, Edge)
+→ Stelle sicher, dass JavaScript aktiviert ist
+
+WEITERE TÜRCHEN HINZUFÜGEN:
+---------------------------
+Sende mir für jedes neue Türchen:
+- Text (als PDF oder Text)
+- Bild (als Bild-Datei)
+- Audio (als MP3-Datei)
+
+Ich füge sie dann in den Kalender ein!
+
+Viel Spaß mit dem Adventskalender! 🎄✨
